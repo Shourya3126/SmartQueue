@@ -97,6 +97,11 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
+    // 0. Show admin login if clicking admin (highest priority)
+    if (isLoggingIn) {
+        return <AdminLogin onLogin={handleAdminLogin} onBack={() => setIsLoggingIn(false)} />;
+    }
+
     // 1. Global Landing (No Canteen Selected)
     if (!selectedCanteen) {
         if (isRegistering) {
@@ -250,11 +255,6 @@ const App: React.FC = () => {
         )
     }
 
-    // Show admin login if clicking admin
-    if (isLoggingIn) {
-        return <AdminLogin onLogin={handleAdminLogin} onBack={() => setIsLoggingIn(false)} />;
-    }
-
     // 2. Role Selection Screen (Specific to Canteen)
     if (currentRole === UserRole.NONE) {
         return (
@@ -272,14 +272,7 @@ const App: React.FC = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <RoleCard 
-                role="Student" 
-                desc="Place orders and track your token." 
-                icon={<Users className="w-8 h-8 text-white" />}
-                color="from-blue-500 to-blue-600"
-                onClick={() => setCurrentRole(UserRole.STUDENT)} 
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <RoleCard 
                 role="Kitchen Staff" 
                 desc="Manage incoming orders efficiently with a digital KDS." 
